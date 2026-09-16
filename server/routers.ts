@@ -66,8 +66,9 @@ export const appRouter = router({
     }),
     generatePanel: publicProcedure.input(z.object({ prompt: z.string().min(10).max(3000) })).mutation(async ({ input }) => {
       const result = await generateImage({ prompt: `Original webtoon panel. ${input.prompt}. Keep the visual identity described in the prompt consistent. No text, logos, watermarks, or copyrighted characters.`, quality: "medium" });
-      if (!result.url) throw new Error("Image service returned no asset URL");
-      return { url: result.url };
+      const url = z.union([z.string().url(), z.string().regex(/^\/manus-storage\/.+/)]).safeParse(result.url);
+      if (!url.success) throw new Error("Image service returned an invalid asset URL");
+      return { url: url.data };
     }),
   }),
 });

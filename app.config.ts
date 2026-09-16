@@ -37,6 +37,14 @@ const config: ExpoConfig = {
   plugins: [
     "expo-router",
     [
+      "expo-media-library",
+      {
+        photosPermission: "Izinkan Webtoon Story Studio menyimpan panel dan video ke galeri.",
+        savePhotosPermission: "Izinkan Webtoon Story Studio menyimpan hasil ekspor ke galeri.",
+        isAccessMediaLocationEnabled: false,
+      },
+    ],
+    [
       "expo-audio",
       { microphonePermission: "Allow $(PRODUCT_NAME) to access your microphone." },
     ],
