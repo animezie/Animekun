@@ -5,7 +5,8 @@ const bundleId = "space.manus.webtoonstorystudio";
 
 const config: ExpoConfig = {
   name: "Webtoon Story Studio",
-  slug: "webtoon-story-studio",
+  slug: "animekun",
+  owner: "zie11s-team",
   version: "1.0.0",
   orientation: "portrait",
   icon: "./assets/images/icon.png",
