@@ -17,6 +17,11 @@ const env = {
   deepLinkScheme: schemeFromBundleId,
 };
 
+// Native APKs do not have a browser hostname to derive the API host from.
+// This public project URL contains no secret and keeps the preview APK connected
+// until a production backend URL is supplied through EXPO_PUBLIC_API_BASE_URL.
+const NATIVE_API_FALLBACK = "https://3000-ifm4rrohciqfbmeczj9ot-ba314ec1.sg2.manus.computer";
+
 export const OAUTH_PORTAL_URL = env.portal;
 export const OAUTH_SERVER_URL = env.server;
 export const APP_ID = env.appId;
@@ -45,8 +50,9 @@ export function getApiBaseUrl(): string {
     }
   }
 
-  // Fallback to empty (will use relative URL)
-  return "";
+  // Native APK fallback; production builds should override this with
+  // EXPO_PUBLIC_API_BASE_URL at build time.
+  return NATIVE_API_FALLBACK;
 }
 
 export const SESSION_TOKEN_KEY = "app_session_token";

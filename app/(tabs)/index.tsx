@@ -44,7 +44,7 @@ export default function HomeScreen() {
   const episodeMutation = trpc.story.generateEpisode.useMutation();
   const panelMutation = trpc.story.generatePanel.useMutation();
 
-  useEffect(() => { AsyncStorage.getItem(KEY).then((raw) => { if (raw) { const saved = JSON.parse(raw) as Project; setProject(saved); setDirection(saved.direction); } }).catch(() => setMessage("Proyek lokal tidak dapat dibaca.")); }, []);
+  useEffect(() => { AsyncStorage.getItem(KEY).then((raw) => { if (raw) { const saved = JSON.parse(raw) as Project; const base = getApiBaseUrl(); const migrated = { ...saved, episodes: saved.episodes.map((episode) => ({ ...episode, scenes: episode.scenes.map((scene) => ({ ...scene, imageUrl: scene.imageUrl?.startsWith("/") ? `${base}${scene.imageUrl}` : scene.imageUrl })) })) }; setProject(migrated); setDirection(migrated.direction); } }).catch(() => setMessage("Proyek lokal tidak dapat dibaca.")); }, []);
   useEffect(() => { if (project) AsyncStorage.setItem(KEY, JSON.stringify(project)).catch(() => setMessage("Penyimpanan lokal gagal.")); }, [project]);
 
   const createProject = () => {
