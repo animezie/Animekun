@@ -20,6 +20,18 @@ const episodeSchema = z.object({
   nextDirection: z.string().min(1),
 });
 
+function parseEpisodeJson(content: string) {
+  const cleaned = content.trim().replace(/^```(?:json)?\s*/i, "").replace(/\s*```$/, "").trim();
+  try {
+    return JSON.parse(cleaned);
+  } catch {
+    const start = cleaned.indexOf("{");
+    const end = cleaned.lastIndexOf("}");
+    if (start >= 0 && end > start) return JSON.parse(cleaned.slice(start, end + 1));
+    throw new Error("Model returned episode content that is not valid JSON");
+  }
+}
+
 export const appRouter = router({
   system: systemRouter,
   auth: router({
@@ -61,7 +73,7 @@ export const appRouter = router({
       });
       const content = result.choices[0]?.message?.content;
       if (typeof content !== "string") throw new Error("Model returned no episode content");
-      const parsed = episodeSchema.safeParse(JSON.parse(content));
+      const parsed = episodeSchema.safeParse(parseEpisodeJson(content));
       if (!parsed.success) throw new Error("Model response failed episode validation");
       return parsed.data;
     }),
