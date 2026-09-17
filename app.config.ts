@@ -41,6 +41,9 @@ const config: ExpoConfig = {
     },
   },
   plugins: [
+    "expo-asset",
+    "expo-web-browser",
+    "expo-font",
     "expo-router",
     [
       "expo-media-library",
