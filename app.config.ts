@@ -42,6 +42,14 @@ const config: ExpoConfig = {
   },
   plugins: [
     "expo-asset",
+    [
+      "llama.rn",
+      {
+        enableEntitlements: false,
+        forceCxx20: true,
+        enableOpenCLAndHexagon: false,
+      },
+    ],
     "expo-web-browser",
     "expo-font",
     "expo-router",
